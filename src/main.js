@@ -3,7 +3,7 @@ import axios from 'axios';
 import App from './App.vue';
 import router from './router';
 import store from './store';
-import './plugin/elemeui';
+import './plugin/antui';
 import './assets/css/style.css';
 
 axios.defaults.baseURL = 'http://localhost:3000/api/v1';

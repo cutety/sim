@@ -1,12 +1,11 @@
 module.exports = {
-  presets: [['@babel/preset-env', { modules: false }]],
-  plugins: [
-    [
-      'component',
-      {
-        libraryName: 'element-ui',
-        styleLibraryName: 'theme-chalk',
-      },
-    ],
+  "presets": [
+      "@vue/cli-plugin-babel/preset"
   ],
-};
+  "plugins": [
+      [
+          "import",
+          {libraryName: "ant-design-vue", libraryDirectory: "es", style:"css"}
+      ]
+  ]
+}
