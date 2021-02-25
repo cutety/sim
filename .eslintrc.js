@@ -12,7 +12,7 @@ module.exports = {
   rules: {
     'indent': ["error", 2],
     'no-tabs': 0,
-    'semi':["error", "always"],
+    'semi':["error", "never"],
     'no-console': process.env.NODE_ENV === 'production' ? 'warn' : 'off',
     'no-debugger': process.env.NODE_ENV === 'production' ? 'warn' : 'off',
   },

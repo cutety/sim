@@ -11,12 +11,16 @@
           </a-input>
          </a-form-model-item>
         <a-form-model-item prop="password">
-          <a-input-password v-model="user.password" placeholder="请输入密码">
-            <a-icon slot="prefix" type="lock" />
+          <a-input-password 
+					v-model="user.password" 
+					placeholder="请输入密码"
+					v-on:keyup.enter="login"
+					>
+            <a-icon slot="prefix" type="key" />
           </a-input-password>
         </a-form-model-item>
         <a-form-model-item>
-          <a-button type="primary" block @click="register">
+          <a-button type="primary" block @click="login">
             登录
           </a-button>
           <a-button block @click="reset">取消</a-button>
@@ -27,6 +31,8 @@
 </template>
 
 <script>
+import userService from '@/service/userService'
+import storageService from '@/service/storageService'
 export default {
   data() {
     return {
@@ -39,19 +45,26 @@ export default {
           { required: true, message: '学工号不能为空', trigger: 'blur' },
         ]
       }
-    };
+    }
   },
   methods: {
-    register() {
-      const { data: res} = this.$http.post('user/login', this.user);
-      if (res.status !== 200) return this.$message.error(res.message);
+    login() {
+      this.$refs.userRef.validate(async valid => {
+        if (!valid) return this.$message.error('数据不合法，请重新输入')
+        const { data: res} = await userService.login(this.user)
+        if (res.status !== 200) return this.$message.error(res.msg)
+        storageService.set(storageService.USER_TOKEN, res.data)
+        const { data: info} = await userService.info()
+			
+        storageService.set(storageService.USER_INFO, JSON.stringify(info.data))
+        this.$router.replace({ name: 'home'})
+      })
     },
     reset() {
-      console.log(this.$refs);
-      this.$refs.userRef.resetFields();
+      this.$refs.userRef.resetFields()
     },
   }
-};
+}
 </script>
 
 <style scoped>
