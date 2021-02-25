@@ -1,6 +1,8 @@
 <template>
-  <div>
-    <a-form-model
+  <div >
+   <a-card style="width:450px">
+      <a-form-model
+      ref="applyRef"
       :model="application"
     >
       <a-form-model-item
@@ -21,8 +23,7 @@
         label="报考院校"
         prop="apply_school"
       >
-        <a-input v-model="application.apply_school">
-        </a-input>
+        <SchoolSelector></SchoolSelector>
       </a-form-model-item>
       <a-form-model-item
         label="录取专业"
@@ -65,14 +66,22 @@
           checked="application.is_admitted"
         ></a-switch>
       </a-form-model-item>
+      <a-space>
+        <a-button type="primary">修改</a-button>
+        <a-button @click="reset">取消</a-button>
+      </a-space>
     </a-form-model>
+   </a-card>
   </div>
 </template>
 
 <script>
 import userService from "@/service/userService"
 import storageService from "@/service/storageService"
+import SchoolSelector from '@/components/user/ShcoolSelector'
+
 export default {
+  components:{SchoolSelector},
   data() {
     return {
       user: {
@@ -101,6 +110,9 @@ export default {
       const { data: res } = await userService.getApplyInfo(this.user)
       this.application = res.data
     },
+    reset() {
+      this.getApplyInfo()
+    }
   },
 }
 </script>

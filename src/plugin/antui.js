@@ -14,7 +14,9 @@ import {
   InputNumber,
   Radio,
   Switch,
-  List
+  List,
+  Space,
+  Select,
 } from 'ant-design-vue'
 
 message.config({
@@ -38,4 +40,6 @@ Vue.use(InputNumber)
 Vue.use(Radio)
 Vue.use(Switch)
 Vue.use(List)
+Vue.use(Space)
+Vue.use(Select)
 

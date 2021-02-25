@@ -7,7 +7,6 @@ import store from './store'
 import './plugin/antui'
 import './assets/css/style.css'
 
-axios.defaults.baseURL = 'http://localhost:3000/api/v1'
 Vue.prototype.$http = axios
 Vue.config.productionTip = false
 Vue.use(Vuex)
