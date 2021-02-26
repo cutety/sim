@@ -6,10 +6,17 @@
       @breakpoint="onBreakpoint"
     >
     <div class="log">
-      <span> SIM </span>
+      <span> {{username}} </span>
     </div>
-     <a-menu theme="dark" mode="inline" :open-keys="openKeys" @openChange="onOpenChange" @click="goToPage">
-      <a-sub-menu key="getApplyInfo">
+     <a-menu 
+      theme="dark" 
+      mode="inline" 
+      :open-keys="openKeys"
+      :default-selected-keys="['application']"
+      :default-open-keys="['application']"
+      @openChange="onOpenChange"
+      @click="goToPage">
+      <a-sub-menu key="pee">
         <span slot="title"><a-icon type="read"/><span>考研管理</span></span>
         <a-menu-item key="application">
           <a-icon type="form"/>
@@ -20,17 +27,47 @@
           导师匹配
         </a-menu-item>
       </a-sub-menu>
+      <a-sub-menu key="accountManage">
+        <span slot="title"><a-icon type="user"/><span>账号管理</span></span>
+        <a-menu-item key="changePassword">
+          <a-icon type="key"/>
+          修改密码
+        </a-menu-item>
+        <a-menu-item key="userInfo">
+          <a-icon type="info"/>
+          个人信息
+        </a-menu-item>
+      </a-sub-menu>
+      <a-sub-menu key="dashboard">
+        <span slot="title"><a-icon type="user"/><span>管理员操作</span></span>
+        <a-menu-item key="addMentor">
+          <a-icon type="key"/>
+          添加导师
+        </a-menu-item>
+        <a-menu-item key="batchAddMentors">
+          <a-icon type="info"/>
+          批量添加
+        </a-menu-item>
+      </a-sub-menu>
     </a-menu>
   </a-layout-sider>
 </template>
 
 <script>
+
+import storageService from "@/service/storageService"
 export default {
   data() {
     return {
-      rootSubmenuKeys: ['sub1', 'sub2', 'sub4'],
-      openKeys: ['sub1'],
+      rootSubmenuKeys: ['application', 'mentorMatch', 'changePassword', 'userInfo', 'addMentor', 'batchAddMentors'],
+      openKeys: ['pee', 'accountManage', 'dashboard'],
+      username:'',
     }
+  },
+  created() {
+    this.username = JSON.parse(
+      storageService.get(storageService.USER_INFO)
+    ).username
   },
   methods: {
     onOpenChange(openKeys) {

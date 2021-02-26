@@ -9,6 +9,7 @@
     <a-select :default-value="0" @change="schoolPicked">
       <a-select-option v-for="(item,index) in schoolList" :key="index">{{item.name}}</a-select-option>
     </a-select>
+    <a-button @click="cancel">取消</a-button>
 	</div>
 </template>
 
@@ -29,6 +30,8 @@ export default {
       currentProvince:'',
       currentCity:'',
       schoolList:'',
+      school:'',
+      flag:true,
     }
   },
   created() {
@@ -39,14 +42,22 @@ export default {
     pickerChange(e) {
       this.cities = cityData[e]
       this.pickerValue[0] = e
+      this.pickerValue[1] = 0
       this.getSchoolData()
     },
     cityPicked(e) {
       this.pickerValue[1] = e 
       this.getSchoolData()
     },
-    schoolPicked() {
-
+    schoolPicked(e) {
+      this.school = this.schoolList[e].name
+      this.$emit('parentFunc', this.school)
+    },
+    cancel() {
+      console.log("Cancel")
+      this.pickerValue=[0, 0, 0]
+      this.getSchoolData()
+      this.$emit('btnFunc', this.flag)
     },
    		/**
 			 * 自定义根据省市过滤大学数据
@@ -56,6 +67,7 @@ export default {
       this.currentCity = this.cities[this.pickerValue[1]].label
       const {data: res} = await this.$http.get('https://api.hcfpz.cn/un/schools', {params:{province:this.currentProvince,city:this.currentCity}})
       this.schoolList = res.data
+      this.schoolPicked(0)
     },
     
   }

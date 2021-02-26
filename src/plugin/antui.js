@@ -17,6 +17,10 @@ import {
   List,
   Space,
   Select,
+  Table,
+  Tag,
+  Modal,
+  Descriptions,
 } from 'ant-design-vue'
 
 message.config({
@@ -42,4 +46,8 @@ Vue.use(Switch)
 Vue.use(List)
 Vue.use(Space)
 Vue.use(Select)
+Vue.use(Table)
+Vue.use(Tag)
+Vue.use(Modal)
+Vue.use(Descriptions)
 

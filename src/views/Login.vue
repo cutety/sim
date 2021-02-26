@@ -55,9 +55,17 @@ export default {
         if (res.status !== 200) return this.$message.error(res.msg)
         storageService.set(storageService.USER_TOKEN, res.data)
         const { data: info} = await userService.info()
-			
         storageService.set(storageService.USER_INFO, JSON.stringify(info.data))
-        this.$router.replace({ name: 'home'})
+        console.log(info.data.role)
+        if(info.data.role === 1) {
+          //管理员
+          console.log("admin")
+          this.$router.push('/userInfo')
+        } else {
+          this.$router.push('/application')
+        }
+       
+       
       })
     },
     reset() {
