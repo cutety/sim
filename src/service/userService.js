@@ -45,6 +45,32 @@ const getMentorInfo = (user_id) => {
     params:params
   })
 }
+const dissolve = (user_id) => {
+  
+  return request.get("user/dissolve/mentor", {
+    params:{
+      user_id:user_id
+    }
+  })
+}
+
+const changePassword = (params) => {
+  return request.put('user/password', JSON.stringify(params))
+}
+
+const getStudentInfo = (user_id) => {
+  return request.get('student/info', {
+    params:{
+      stu_id:user_id
+    }
+  })
+}
+
+const updateStudentInfo = (params) => {
+  return request.put('student/info', JSON.stringify(params))
+}
+
+
 
 export default {
   login,
@@ -53,5 +79,9 @@ export default {
   updateApplyInfo,
   getMentorList,
   bindMentor,
-  getMentorInfo
+  getMentorInfo,
+  dissolve,
+  changePassword,
+  getStudentInfo,
+  updateStudentInfo,
 }

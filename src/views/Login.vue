@@ -56,14 +56,13 @@ export default {
         storageService.set(storageService.USER_TOKEN, res.data)
         const { data: info} = await userService.info()
         storageService.set(storageService.USER_INFO, JSON.stringify(info.data))
-        console.log(info.data.role)
         if(info.data.role === 1) {
           //管理员
           this.$router.push('/addmentor')
         } else if(info.data.role == 2) {
-          this.$router.push("/mentor")
+          this.$router.push("/application")
         } else {
-          this.$router.push('/application')
+          this.$router.push('/mentorStudents')
         }
        
        

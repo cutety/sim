@@ -6,9 +6,10 @@ const mentoredStudents = (params) => {
   })
 }
 
-const getStudentInfo = (user_id) => {
-  return request.get('')
+const updateMentorInfo = (params) => {
+  return request.put('mentor/info', JSON.stringify(params))
 }
 export default {
   mentoredStudents,
+  updateMentorInfo,
 }

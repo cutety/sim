@@ -9,7 +9,7 @@
         bordere
         @change="handleTableChange"
       >
-      
+      <span slot="gender" slot-scope="data">{{ data == 1 ? '男' : '女' }}</span>
         <template
           slot="action"
           slot-scope="text, record, index"
@@ -26,7 +26,7 @@
               size="small"
               type="danger"
               icon="heart"
-              @click="bindMentor(record.user_id)"
+              @click="dissolve(record.user_id)"
             >解除关系</a-button>
           </div>
           <a-modal
@@ -43,6 +43,9 @@
             >
               <a-descriptions-item label="姓名">
                 {{studentsDetail.stu_name}}
+              </a-descriptions-item>
+              <a-descriptions-item label="学号">
+                {{studentsDetail.user_id}}
               </a-descriptions-item>
               <a-descriptions-item label="性别">
                 {{studentsDetail.gender == 1 ? '男' : '女'}}
@@ -102,6 +105,7 @@ const columns = [
     title: "性别",
     dataIndex: "gender",
     key: "gender",
+    scopedSlots: { customRender: 'gender'}
   },
   {
     title: "年级",
@@ -125,7 +129,7 @@ const columns = [
   },
   {
     title: "操作",
-    width: "15%",
+    width: "20%",
     key: "action",
     align: "center",
     scopedSlots: { customRender: "action" },
@@ -164,20 +168,12 @@ export default {
     this.getMentorList()
   },
   methods: {
-    handleChange(info) {
-      if (info.file.status !== 'uploading') {
-      }
-      if (info.file.status === 'done') {
-        this.$message.success(`上传成功`)
-      } else if (info.file.status === 'error') {
-        this.$message.error(`上传失败`)
-      }
-    },
-    async bindMentor(mentor_user_id) {
-      const { data: res } = await userService.bindMentor(mentor_user_id)
+    async dissolve(user_id) {
+      const { data: res } = await userService.dissolve(user_id)
       if (res.status !== 200) {
         return this.$message.error(res.msg)
       }
+      this.getMentorList()
       return this.$message.success(res.msg)
     },
     async getMentorList() {

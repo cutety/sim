@@ -66,9 +66,9 @@
     </a-form-model-item> --> 
     <a-form-model-item
         label="本科院校"
-        prop="undergraduate_school"
+        prop="undergraduate_university"
       >
-         <a-input v-if="undergraduate_flag" disabled v-model="mentor.undergraduate_school"></a-input>
+         <a-input v-if="undergraduate_flag" disabled v-model="mentor.undergraduate_university"></a-input>
         <SchoolSelector v-on:btnFunc="btnFn" v-else v-on:parentFunc="undergraduateFunc"></SchoolSelector>
         <a-button type="primary" @click.prevent="undergraduate_flag=false"  v-show="undergraduate_flag">添加</a-button>
       </a-form-model-item>
