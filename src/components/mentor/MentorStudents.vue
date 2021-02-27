@@ -1,95 +1,87 @@
 <template>
   <div>
-    <a-upload
-    name="file"
-    list-type="picture-card"
-    :show-upload-list="false"
-    :action="upUrl"
-    @change="handleChange"
-  >
-    <a-button>
-      <a-icon type="upload"/>
-      添加导师
-    </a-button>
-  </a-upload>
   <a-card>
       <a-table
-        rowKey="ID"
+        rowKey="user_id"
         :columns="columns"
         :pagination="pagination"
-        :data-source="MentorList"
+        :data-source="students"
         bordere
         @change="handleTableChange"
       >
-        <a
-          slot="name"
-          slot-scope="text"
-        >{{ text }}</a>
-        <span slot="customTitle">
-          <a-icon type="smile-o" /> 姓名
-        </span>
+      
         <template
           slot="action"
-          slot-scope="data"
+          slot-scope="text, record, index"
         >
           <div class="actionSlot">
             <a-button
               size="small"
               type="primary"
+               style="margin-right: 15px"
               icon="info-circle"
-              @click="getMentorInfo(data.user_id)"
+              @click="getStudentInfo(index)"
             >详情</a-button>
+             <a-button
+              size="small"
+              type="danger"
+              icon="heart"
+              @click="bindMentor(record.user_id)"
+            >解除关系</a-button>
           </div>
           <a-modal
             width="900px"
             :column="{ xxl: 4, xl: 3, lg: 3, md: 3, sm: 2, xs: 1 }"
-            v-model="detailVisible"
+            v-model="visible"
             title="详细资料"
             ok-text="确认" cancel-text="取消"
             @ok="handleOk"
           >
             <a-descriptions
-              title="导师信息"
+              title="学生信息"
               bordered
             >
               <a-descriptions-item label="姓名">
-                {{mentorDetail.name}}
+                {{studentsDetail.stu_name}}
               </a-descriptions-item>
               <a-descriptions-item label="性别">
-                {{mentorDetail.gender == 1 ? '男' : '女'}}
+                {{studentsDetail.gender == 1 ? '男' : '女'}}
               </a-descriptions-item>
               <a-descriptions-item label="电话">
-                {{mentorDetail.phone}}
+                {{studentsDetail.phone}}
               </a-descriptions-item>
               <a-descriptions-item label="邮箱">
-                {{mentorDetail.email}}
+                {{studentsDetail.email}}
               </a-descriptions-item>
               <a-descriptions-item label="微信">
-                {{mentorDetail.wechat}}
+                {{studentsDetail.wechat}}
               </a-descriptions-item>
               <a-descriptions-item label="QQ">
-                {{mentorDetail.qq}}
+                {{studentsDetail.qq}}
               </a-descriptions-item>
-              <a-descriptions-item label="学位">
-                {{mentorDetail.degree}}
+              <a-descriptions-item label="专业">
+                {{studentsDetail.major}}
               </a-descriptions-item>
-              <a-descriptions-item label="研究方向">
-                {{mentorDetail.research_direction}}
+              <a-descriptions-item label="报考院校">
+                {{studentsDetail.apply_school}}
               </a-descriptions-item>
-              <a-descriptions-item label="本科">
-                {{mentorDetail.undergraduate_university}}
-                <br>
-                {{mentorDetail.undergraduate_major}}
+              <a-descriptions-item label="报考专业">
+                {{studentsDetail.apply_major}}
               </a-descriptions-item>
-              <a-descriptions-item label="硕士">
-                {{mentorDetail.graduate_school}}
-                <br>
-                {{mentorDetail.graduate_major}}
+              <a-descriptions-item label="初试成绩">
+                {{studentsDetail.preliminiary_result}}
               </a-descriptions-item>
-              <a-descriptions-item label="博士">
-                {{mentorDetail.phd_school}}
-                <br>
-                {{mentorDetail.phd_major}}
+              <a-descriptions-item label="复试成绩">
+                {{studentsDetail.retrail_result}}
+              </a-descriptions-item>
+               <a-descriptions-item label="录取学校">
+                {{studentsDetail.admission_shcool}}
+              </a-descriptions-item>
+               <a-descriptions-item label="录取专业">
+                {{studentsDetail.admission_major}}
+              </a-descriptions-item>
+              <a-descriptions-item label="是否被录取">
+                 {{studentsDetail.gender == 1 ? '是' : '否'}}
               </a-descriptions-item>
             </a-descriptions>
           </a-modal>
@@ -102,35 +94,34 @@
 <script>
 const columns = [
   {
-    dataIndex: "name",
-    key: "name",
-    slots: { title: "customTitle" },
-    scopedSlots: { customRender: "name" },
+    title: "姓名",
+    dataIndex: "stu_name",
+    key: "stu_name",
   },
   {
-    title: "学位",
-    dataIndex: "degree",
-    key: "degree",
+    title: "性别",
+    dataIndex: "gender",
+    key: "gender",
   },
   {
-    title: "电话",
-    key: "phone",
-    dataIndex: "phone",
+    title: "年级",
+    dataIndex: "grade",
+    key: "grade",
   },
   {
-    title: "邮箱",
-    key: "email",
-    dataIndex: "email",
+    title: "专业",
+    dataIndex: "major",
+    key: "major",
   },
   {
-    title: "微信",
-    key: "wechat",
-    dataIndex: "wechat",
+    title: "报考院校",
+    dataIndex: "apply_school",
+    key: "apply_school",
   },
   {
-    title: "QQ",
-    key: "qq",
-    dataIndex: "qq",
+    title: "报考专业",
+    dataIndex: "apply_major",
+    key: "apply_major",
   },
   {
     title: "操作",
@@ -140,8 +131,10 @@ const columns = [
     scopedSlots: { customRender: "action" },
   },
 ]
-import adminService from '@/service/adminService'
+import mentorService from '@/service/mentorService'
 import userService from '@/service/userService'
+
+import storageService from "@/service/storageService"
 export default {
   data() {
     return {
@@ -152,18 +145,22 @@ export default {
         showSizeChanger: true,
         showTotal: (total) => `共${total}条`,
       },
-      MentorList: [],
+      students: [],
+      studentsDetail:{},
       columns,
       queryParam: {
         page_size: 5,
         page_number: 1,
+        user_id:'',
       },
-      detailVisible: false,
-      mentorDetail: {},
+      visible: false,
       upUrl: process.env.VUE_APP_BASE_URL+ 'upload',
     }
   },
   created() {
+    this.queryParam.user_id = JSON.parse(
+      storageService.get(storageService.USER_INFO)
+    ).user_id
     this.getMentorList()
   },
   methods: {
@@ -184,14 +181,14 @@ export default {
       return this.$message.success(res.msg)
     },
     async getMentorList() {
-      const { data: res } = await adminService.getMentors(this.queryParam)
-      this.MentorList = res.data.items
+      const { data: res } = await mentorService.mentoredStudents(this.queryParam)
+      this.students = res.data.items
       this.pagination.total = res.data.total
     },
-    async getMentorInfo(mentor_user_id) {
-      this.detailVisible = true
-      const { data: res } = await userService.getMentorInfo(mentor_user_id)
-      this.mentorDetail = res.data
+    async getStudentInfo(index) {
+      this.visible = true
+      console.log(index)
+      this.studentsDetail = this.students[index]
     },
     handleTableChange(pagination, filters, sorter) {
       var pager = { ...this.pagination }

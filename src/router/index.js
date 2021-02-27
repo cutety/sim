@@ -20,6 +20,7 @@ const ChangePassword = () => import(/* webpackChunkName: "ChangePassword" */ '@/
 const UserInfo = () => import(/* webpackChunkName: "UserInfo" */ '@/components/user/UserInfo.vue')
 const AddMentor = () => import(/* webpackChunkName: "AddMentor" */ '@/components/admin/AddMentor.vue')
 const BatchAddMentors = () => import(/* webpackChunkName: "BatchAddMentors" */ '@/components/admin/BatchAddMentors.vue')
+const MentorStudents = () => import(/* webpackChunkName: "MentorStudents" */ '@/components/mentor/MentorStudents.vue')
 const routes = [
   {
     path: '/login',
@@ -37,6 +38,7 @@ const routes = [
       {path: '/userInfo', component: UserInfo},
       {path: '/addMentor', component: AddMentor},
       {path: '/batchAddMentors', component: BatchAddMentors},
+      {path: '/mentorStudents', component: MentorStudents},
     ]
   },
 ]

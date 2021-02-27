@@ -21,6 +21,7 @@ import {
   Tag,
   Modal,
   Descriptions,
+  Upload,
 } from 'ant-design-vue'
 
 message.config({
@@ -50,4 +51,5 @@ Vue.use(Table)
 Vue.use(Tag)
 Vue.use(Modal)
 Vue.use(Descriptions)
+Vue.use(Upload)
 

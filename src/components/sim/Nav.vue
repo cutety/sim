@@ -38,6 +38,13 @@
           个人信息
         </a-menu-item>
       </a-sub-menu>
+      <a-sub-menu key="mentorPanel">
+        <span slot="title"><a-icon type="user"/><span>导师操作</span></span>
+        <a-menu-item key="mentorStudents">
+          <a-icon type="key"/>
+          指导情况
+        </a-menu-item>
+      </a-sub-menu>
       <a-sub-menu key="dashboard">
         <span slot="title"><a-icon type="user"/><span>管理员操作</span></span>
         <a-menu-item key="addMentor">
@@ -59,8 +66,8 @@ import storageService from "@/service/storageService"
 export default {
   data() {
     return {
-      rootSubmenuKeys: ['application', 'mentorMatch', 'changePassword', 'userInfo', 'addMentor', 'batchAddMentors'],
-      openKeys: ['pee', 'accountManage', 'dashboard'],
+      rootSubmenuKeys: ['application', 'mentorMatch', 'changePassword', 'userInfo', 'addMentor', 'batchAddMentors','mentorStudent'],
+      openKeys: ['pee', 'accountManage', 'dashboard', 'mentorPanel'],
       username:'',
     }
   },

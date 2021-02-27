@@ -59,8 +59,9 @@ export default {
         console.log(info.data.role)
         if(info.data.role === 1) {
           //管理员
-          console.log("admin")
-          this.$router.push('/userInfo')
+          this.$router.push('/addmentor')
+        } else if(info.data.role == 2) {
+          this.$router.push("/mentor")
         } else {
           this.$router.push('/application')
         }
