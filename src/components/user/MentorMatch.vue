@@ -36,13 +36,14 @@
               @click="getMentorInfo(index)"
             >详情</a-button>
           </div>
-          <a-modal
+        
+                   <a-modal
             width="900px"
             :column="{ xxl: 4, xl: 3, lg: 3, md: 3, sm: 2, xs: 1 }"
             v-model="noteVisible"
             title="申请"
             ok-text="确认" cancel-text="取消"
-            @ok="bindMentor(index)"
+            @ok="bindMentor"
           >
           <a-textarea 
             placeholder="在这里输入申请内容"
@@ -52,6 +53,7 @@
             
           </a-textarea>
           </a-modal>
+        
           <a-modal
             width="900px"
             :column="{ xxl: 4, xl: 3, lg: 3, md: 3, sm: 2, xs: 1 }"
@@ -191,6 +193,7 @@ export default {
       detailVisible: false,
       noteVisible: false,
       mentorDetail: {},
+      mentor_user_id:'',
     }
   },
   created() {
@@ -201,27 +204,30 @@ export default {
   },
   methods: {
     popNote(index) {
+      this.mentor_user_id = this.MentorList[index].user_id
       this.noteVisible = true
     },
-    async bindMentor(index) {
-      console.log(index)
-      this.dualSelection.mentor_user_id = this.MentorList[index].user_id
+    async bindMentor() {
+      this.dualSelection.mentor_user_id = this.mentor_user_id
       this.dualSelection.user_id = this.queryParam.user_id
       this.dualSelection.status = 0
       const { data: res } = await userService.dualSelect(this.dualSelection)
       if (res.status !== 200) {
+        this.noteVisible = false
         return this.$message.error(res.msg)
       }
-      return this.$message.success(res.msg)
+      this.noteVisible = false
+      this.getMentorList()
+      return this.$message.success('提交成功，双选结果可以在申请结果页面查看')
     },
     async getMentorList() {
       const { data: res } = await userService.getMentorList(this.queryParam)
       this.MentorList = res.data.items
       this.pagination.total = res.data.total
     },
-    async getMentorInfo(mentor_user_id) {
+    async getMentorInfo(index) {
       this.detailVisible = true
-      const { data: res } = await userService.getMentorInfo(mentor_user_id)
+      const { data: res } = await userService.getMentorInfo(this.MentorList[index].user_id)
       this.mentorDetail = res.data
     },
     handleTableChange(pagination, filters, sorter) {

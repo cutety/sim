@@ -28,7 +28,7 @@
         </a-menu-item>
           <a-menu-item key="selectionResult">
           <a-icon type="table"/>
-          导师申请
+          申请结果
         </a-menu-item>
       </a-sub-menu>
       <a-sub-menu key="accountManage">

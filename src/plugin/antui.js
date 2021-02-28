@@ -22,6 +22,7 @@ import {
   Modal,
   Descriptions,
   Upload,
+  Alert
 } from 'ant-design-vue'
 
 message.config({
@@ -52,4 +53,5 @@ Vue.use(Tag)
 Vue.use(Modal)
 Vue.use(Descriptions)
 Vue.use(Upload)
+Vue.use(Alert)
 

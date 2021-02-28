@@ -1,6 +1,6 @@
 <template>
   <div>
-  <a-card>
+    <a-card>
       <a-table
         rowKey="user_id"
         :columns="columns"
@@ -9,7 +9,10 @@
         bordere
         @change="handleTableChange"
       >
-      <span slot="gender" slot-scope="data">{{ data == 1 ? '男' : '女' }}</span>
+        <span
+          slot="gender"
+          slot-scope="data"
+        >{{ data == 1 ? '男' : '女' }}</span>
         <template
           slot="action"
           slot-scope="text, record, index"
@@ -21,7 +24,7 @@
               icon="info-circle"
               @click="getStudentInfo(index)"
             >详情</a-button>
-             <a-button
+            <a-button
               style="margin-left: 15px"
               size="small"
               type="danger"
@@ -33,7 +36,7 @@
               size="small"
               type="danger"
               icon="heart"
-              @click="reject(index)"
+              @click="popNote(index)"
             >拒绝</a-button>
           </div>
           <a-modal
@@ -41,7 +44,8 @@
             :column="{ xxl: 4, xl: 3, lg: 3, md: 3, sm: 2, xs: 1 }"
             v-model="visible"
             title="详细资料"
-            ok-text="确认" cancel-text="取消"
+            ok-text="确认"
+            cancel-text="取消"
             @ok="handleOk"
           >
             <a-descriptions
@@ -84,20 +88,38 @@
               <a-descriptions-item label="复试成绩">
                 {{studentsDetail.retrail_result}}
               </a-descriptions-item>
-               <a-descriptions-item label="录取学校">
+              <a-descriptions-item label="录取学校">
                 {{studentsDetail.admission_shcool}}
               </a-descriptions-item>
-               <a-descriptions-item label="录取专业">
+              <a-descriptions-item label="录取专业">
                 {{studentsDetail.admission_major}}
               </a-descriptions-item>
               <a-descriptions-item label="是否被录取">
-                 {{studentsDetail.gender == 1 ? '是' : '否'}}
+                {{studentsDetail.gender == 1 ? '是' : '否'}}
               </a-descriptions-item>
             </a-descriptions>
           </a-modal>
         </template>
       </a-table>
-      </a-card>
+    </a-card>
+    <a-modal
+      width="900px"
+      :column="{ xxl: 4, xl: 3, lg: 3, md: 3, sm: 2, xs: 1 }"
+      v-model="noteVisible"
+      title="拒绝原因"
+      ok-text="确认"
+      cancel-text="取消"
+      @ok="reject"
+      @cancel="handleCancel"
+    >
+      <a-textarea
+        placeholder="在这里输入拒绝原因"
+        :auto-size="{ minRows: 3, maxRows: 6 }"
+        v-model="dualSelection.note"
+      >
+
+      </a-textarea>
+    </a-modal>
   </div>
 </template>
 
@@ -112,7 +134,7 @@ const columns = [
     title: "性别",
     dataIndex: "gender",
     key: "gender",
-    scopedSlots: { customRender: 'gender'}
+    scopedSlots: { customRender: "gender" },
   },
   {
     title: "年级",
@@ -142,13 +164,14 @@ const columns = [
     scopedSlots: { customRender: "action" },
   },
 ]
-import mentorService from '@/service/mentorService'
-import userService from '@/service/userService'
+import mentorService from "@/service/mentorService"
+import userService from "@/service/userService"
 
 import storageService from "@/service/storageService"
 export default {
   data() {
     return {
+      noteVisible:false,
       pagination: {
         pageSizeOption: ["5", "10", "15"],
         pageSize: 5,
@@ -156,17 +179,20 @@ export default {
         showSizeChanger: true,
         showTotal: (total) => `共${total}条`,
       },
+      student_user_id:'',
       students: [],
-      studentsDetail:{},
-      dualSelection:{},
+      studentsDetail: {},
+      dualSelection: {
+        note:''
+      },
       columns,
       queryParam: {
         page_size: 5,
         page_number: 1,
-        user_id:'',
+        user_id: "",
       },
       visible: false,
-      upUrl: process.env.VUE_APP_BASE_URL+ 'upload',
+      upUrl: process.env.VUE_APP_BASE_URL + "upload",
     }
   },
   created() {
@@ -188,7 +214,9 @@ export default {
       return this.$message.success(res.msg)
     },
     async getMentorList() {
-      const { data: res } = await mentorService.instructRequest(this.queryParam)
+      const { data: res } = await mentorService.instructRequest(
+        this.queryParam
+      )
       this.students = res.data.items
       this.pagination.total = res.data.total
     },
@@ -196,15 +224,20 @@ export default {
       this.visible = true
       this.studentsDetail = this.students[index]
     },
-    async reject(index) {
-      this.dualSelection.user_id = this.students[index].user_id
-      this.dualSelection.mentor_user_id = this.queryParam.user_id
-      this.dualSelection.status = 3
-      this.dualSelection.note = 'reject'
+    popNote(index) {
+      this.student_user_id = this.students[index].user_id
+      this.noteVisible = true
+    },
+    async reject() {
+      this.dualSelection.user_id = this.student_user_id
+      this.dualSelection.mentor_user_id = ''
+      this.dualSelection.status = 2
       const { data: res } = await userService.dualSelect(this.dualSelection)
       if (res.status !== 200) {
+        this.noteVisible = false
         return this.$message.error(res.msg)
       }
+      this.noteVisible = false
       this.getMentorList()
       return this.$message.success(res.msg)
     },
@@ -228,6 +261,6 @@ export default {
     handleCancel() {
       this.detailVisible = false
     },
-  }
+  },
 }
 </script>

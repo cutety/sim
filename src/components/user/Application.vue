@@ -32,14 +32,22 @@
         label="指导教师" 
         prop="mentor_name"
       >
-        <a-input v-if="application.mentor_name" v-model="application.mentor_name"></a-input>
+        <div v-if="application.mentor_name">
+          <a-input v-model="application.mentor_name" disabled></a-input>
+            <a-button type="primary" @click.prevent="mentor_name = application.mentor_name;application.mentor_name = ''"  v-show="flag">修改</a-button>
+        </div>
+        
         <div v-else>
-          <a-select default-value="请选择" style="width:80px;margin-right:16px"  @change="selectMentor">
+          <a-select default-value="请选择" style="width:160px;margin-right:16px"  @change="selectMentor">
+            <a-select-option value="无">
+              无
+            </a-select-option>
             <a-select-option v-for="item in mentors" :key="item.user_id">
-              {{item.name}}
+              {{item.name}} | {{item.research_direction}}
             </a-select-option>
           </a-select>
           <a-button type="primary" @click="recommand">查看推荐的老师</a-button>
+          <a-button v-show="mentor_name !== ''" style="margin-left:10px" type="primary" @click="handleCancel">取消</a-button>
         </div>
       </a-form-model-item>
       <a-form-model-item
@@ -119,6 +127,7 @@ export default {
   data() {
     return {
       mentor_user_id:'',
+      mentor_name:'',
       labelCol: { span: 4 },
       wrapperCol: { span: 14 },
       flag:true,
@@ -164,6 +173,12 @@ export default {
       this.$router.push('/mentorMatch')
     },
     selectMentor(user_id) {
+      if(user_id == "无") {
+        this.application.mentor_user_id = ''
+        this.application.status = 0
+        this.application.note = ''
+        return
+      }
       this.mentor_user_id = user_id
       this.noteVisible = true
     },
@@ -174,6 +189,7 @@ export default {
     },
     handleCancel() {
       this.application.note = ''
+      this.application.mentor_name = this.mentor_name
       this.noteVisible = false
     },
     reset() {
@@ -185,7 +201,8 @@ export default {
       if (res.status !== 200) {
         return this.$message.error(res.msg)
       }
-      return this.$message.success(res.msg)
+      this.getApplyInfo()
+      return this.$message.success('提交成功，双选结果可以在申请结果页面查看')
     },
     parentFn(payload) {
       this.application.apply_school = payload
