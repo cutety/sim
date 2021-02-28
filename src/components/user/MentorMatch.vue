@@ -18,23 +18,40 @@
         </span>
         <template
           slot="action"
-          slot-scope="data"
+          slot-scope="text, record, index"
         >
           <div class="actionSlot">
             <a-button
               size="small"
-              type="primary"
+              type="danger"
               icon="heart"
               style="margin-right: 15px"
-              @click="bindMentor(data.user_id)"
-            >选择</a-button>
+              @click="popNote(index)"
+              :disabled="record.status == 1 ? true : false"
+            >{{record.status == 1 ? '已选择' : '选择'}}</a-button>
             <a-button
               size="small"
               type="primary"
               icon="info-circle"
-              @click="getMentorInfo(data.user_id)"
+              @click="getMentorInfo(index)"
             >详情</a-button>
           </div>
+          <a-modal
+            width="900px"
+            :column="{ xxl: 4, xl: 3, lg: 3, md: 3, sm: 2, xs: 1 }"
+            v-model="noteVisible"
+            title="申请"
+            ok-text="确认" cancel-text="取消"
+            @ok="bindMentor(index)"
+          >
+          <a-textarea 
+            placeholder="在这里输入申请内容"
+            :auto-size="{ minRows: 3, maxRows: 6 }"
+            v-model="dualSelection.note"
+          >
+            
+          </a-textarea>
+          </a-modal>
           <a-modal
             width="900px"
             :column="{ xxl: 4, xl: 3, lg: 3, md: 3, sm: 2, xs: 1 }"
@@ -102,9 +119,14 @@ const columns = [
     scopedSlots: { customRender: "name" },
   },
   {
-    title: "学位",
+    title: "最高学位",
     dataIndex: "degree",
     key: "degree",
+  },
+  {
+    title: "匹配学位",
+    dataIndex: "match_degree",
+    key: "match_degree",
   },
   {
     title: "匹配院校",
@@ -163,7 +185,11 @@ export default {
         page_number: 1,
         user_id: "",
       },
+      dualSelection:{
+        note:'',
+      },
       detailVisible: false,
+      noteVisible: false,
       mentorDetail: {},
     }
   },
@@ -174,8 +200,15 @@ export default {
     this.getMentorList()
   },
   methods: {
-    async bindMentor(mentor_user_id) {
-      const { data: res } = await userService.bindMentor(mentor_user_id)
+    popNote(index) {
+      this.noteVisible = true
+    },
+    async bindMentor(index) {
+      console.log(index)
+      this.dualSelection.mentor_user_id = this.MentorList[index].user_id
+      this.dualSelection.user_id = this.queryParam.user_id
+      this.dualSelection.status = 0
+      const { data: res } = await userService.dualSelect(this.dualSelection)
       if (res.status !== 200) {
         return this.$message.error(res.msg)
       }
@@ -211,6 +244,7 @@ export default {
     },
     handleCancel() {
       this.detailVisible = false
+      this.noteVisible = false
     },
   },
 }

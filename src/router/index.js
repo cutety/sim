@@ -21,6 +21,8 @@ const UserInfo = () => import(/* webpackChunkName: "UserInfo" */ '@/components/u
 const AddMentor = () => import(/* webpackChunkName: "AddMentor" */ '@/components/admin/AddMentor.vue')
 const BatchAddMentors = () => import(/* webpackChunkName: "BatchAddMentors" */ '@/components/admin/BatchAddMentors.vue')
 const MentorStudents = () => import(/* webpackChunkName: "MentorStudents" */ '@/components/mentor/MentorStudents.vue')
+const InstructRequest = () => import(/* webpackChunkName: "InstructRequest" */ '@/components/mentor/InstructRequest.vue')
+const SelectionResult = () => import(/* webpackChunkName: "SelectionResult" */ '@/components/user/SelectionResult.vue')
 const routes = [
   {
     path: '/login',
@@ -39,6 +41,8 @@ const routes = [
       {path: '/addMentor', component: AddMentor},
       {path: '/batchAddMentors', component: BatchAddMentors},
       {path: '/mentorStudents', component: MentorStudents},
+      {path: '/instructRequest', component: InstructRequest},
+      {path: '/selectionResult', component: SelectionResult},
     ]
   },
 ]

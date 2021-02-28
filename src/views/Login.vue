@@ -64,8 +64,6 @@ export default {
         } else {
           this.$router.push('/mentorStudents')
         }
-       
-       
       })
     },
     reset() {

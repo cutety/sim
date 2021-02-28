@@ -70,7 +70,15 @@ const updateStudentInfo = (params) => {
   return request.put('student/info', JSON.stringify(params))
 }
 
+const dualSelect = (params) => {
+  return request.put('user/dual/select', JSON.stringify(params))
+}
 
+const getMentors = (params) => {
+  return request.get("user/list/mentor", {
+    params:params
+  })
+}
 
 export default {
   login,
@@ -84,4 +92,6 @@ export default {
   changePassword,
   getStudentInfo,
   updateStudentInfo,
+  dualSelect,
+  getMentors,
 }

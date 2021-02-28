@@ -16,7 +16,7 @@
       :default-open-keys="['application']"
       @openChange="onOpenChange"
       @click="goToPage">
-      <a-sub-menu key="pee">
+      <a-sub-menu key="pee" v-show="role == 2 ? true : false">
         <span slot="title"><a-icon type="read"/><span>考研管理</span></span>
         <a-menu-item key="application">
           <a-icon type="form"/>
@@ -25,6 +25,10 @@
         <a-menu-item key="mentorMatch">
           <a-icon type="team"/>
           导师匹配
+        </a-menu-item>
+          <a-menu-item key="selectionResult">
+          <a-icon type="table"/>
+          导师申请
         </a-menu-item>
       </a-sub-menu>
       <a-sub-menu key="accountManage">
@@ -38,21 +42,25 @@
           个人信息
         </a-menu-item>
       </a-sub-menu>
-      <a-sub-menu key="mentorPanel">
+      <a-sub-menu key="mentorPanel" v-show="role == 3 ? true : false">
         <span slot="title"><a-icon type="user"/><span>导师操作</span></span>
         <a-menu-item key="mentorStudents">
-          <a-icon type="key"/>
+          <a-icon type="solution"/>
           指导情况
         </a-menu-item>
+          <a-menu-item key="instructRequest">
+          <a-icon type="pull-request"/>
+          指导申请
+        </a-menu-item>
       </a-sub-menu>
-      <a-sub-menu key="dashboard">
+      <a-sub-menu key="dashboard" v-show="role == 1 ? true : false">
         <span slot="title"><a-icon type="user"/><span>管理员操作</span></span>
         <a-menu-item key="addMentor">
-          <a-icon type="key"/>
+          <a-icon type="user-add"/>
           添加导师
         </a-menu-item>
         <a-menu-item key="batchAddMentors">
-          <a-icon type="info"/>
+          <a-icon type="usergroup-add"/>
           批量添加
         </a-menu-item>
       </a-sub-menu>
@@ -66,15 +74,19 @@ import storageService from "@/service/storageService"
 export default {
   data() {
     return {
-      rootSubmenuKeys: ['application', 'mentorMatch', 'changePassword', 'userInfo', 'addMentor', 'batchAddMentors','mentorStudent'],
+      rootSubmenuKeys: ['application', 'mentorMatch', 'changePassword', 'userInfo', 'addMentor', 'batchAddMentors','mentorStudent', 'instructRequest', 'selectionResult'],
       openKeys: ['pee', 'accountManage', 'dashboard', 'mentorPanel'],
       username:'',
+      role:'',
     }
   },
   created() {
     this.username = JSON.parse(
       storageService.get(storageService.USER_INFO)
     ).username
+    this.role = JSON.parse(
+      storageService.get(storageService.USER_INFO)
+    ).role
   },
   methods: {
     onOpenChange(openKeys) {

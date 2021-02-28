@@ -13,10 +13,17 @@
         <a-input v-model="mentor.name"></a-input>
       </a-form-model-item>
       <a-form-model-item  label="性别" prop="gender">
-        <a-input v-model="mentor.gender"></a-input>
+        <a-select default-value="1" v-model="mentor.gender">
+      <a-select-option value="1">
+        男
+      </a-select-option>
+      <a-select-option value="2">
+        女
+      </a-select-option>
+    </a-select>
       </a-form-model-item>
       <a-form-model-item  label="电话" prop="phone">
-        <a-input v-model="mentor.phone"></a-input>
+        <a-input v-model="mentor.phone" type="number"></a-input>
       </a-form-model-item>
       <a-form-model-item  label="邮箱" prop="email">
         <a-input v-model="mentor.email"></a-input>

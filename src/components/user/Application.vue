@@ -28,8 +28,19 @@
         <SchoolSelector v-on:btnFunc="btnFn" v-else v-on:parentFunc="parentFn"></SchoolSelector>
         <a-button type="primary" @click.prevent="flag=false"  v-show="flag">修改</a-button>
       </a-form-model-item>
-      <a-form-model-item label="指导教师" prop="mentor_name">
-        <a-input v-model="application.mentor_name"></a-input>
+      <a-form-model-item 
+        label="指导教师" 
+        prop="mentor_name"
+      >
+        <a-input v-if="application.mentor_name" v-model="application.mentor_name"></a-input>
+        <div v-else>
+          <a-select default-value="请选择" style="width:80px;margin-right:16px"  @change="selectMentor">
+            <a-select-option v-for="item in mentors" :key="item.user_id">
+              {{item.name}}
+            </a-select-option>
+          </a-select>
+          <a-button type="primary" @click="recommand">查看推荐的老师</a-button>
+        </div>
       </a-form-model-item>
       <a-form-model-item
         label="录取专业"
@@ -78,6 +89,23 @@
     </a-form-model-item>
     </a-form-model>
     </a-card>
+     <a-modal
+            width="900px"
+            :column="{ xxl: 4, xl: 3, lg: 3, md: 3, sm: 2, xs: 1 }"
+            v-model="noteVisible"
+            title="申请"
+            ok-text="确认" cancel-text="取消"
+            @ok="handleOk"
+            @cancel="handleCancel"
+          >
+          <a-textarea 
+            placeholder="在这里输入申请内容"
+            :auto-size="{ minRows: 3, maxRows: 6 }"
+            v-model="application.note"
+          >
+            
+          </a-textarea>
+          </a-modal>
   </div>
 </template>
 
@@ -90,12 +118,14 @@ export default {
   components:{SchoolSelector},
   data() {
     return {
+      mentor_user_id:'',
       labelCol: { span: 4 },
       wrapperCol: { span: 14 },
       flag:true,
       user: {
         user_id: "",
       },
+      noteVisible:false,
       application: {
         user_id: "",
         apply_major: "",
@@ -107,7 +137,10 @@ export default {
         retrail_result: 0,
         admission_major: "",
         admission_shcool: "",
+        status:0,
+        note:'',
       },
+      mentors:[]
     }
   },
   created() {
@@ -116,20 +149,38 @@ export default {
     ).user_id
     this.application.user_id = this.user.user_id
     this.getApplyInfo()
+    this.getMentorList()
   },
   methods: {
+    async getMentorList() {
+      const { data: res } = await userService.getMentors()
+      this.mentors = res.data.items
+    },
     async getApplyInfo() {
       const { data: res } = await userService.getApplyInfo(this.user)
       this.application = res.data
+    },
+    recommand() {
+      this.$router.push('/mentorMatch')
+    },
+    selectMentor(user_id) {
+      this.mentor_user_id = user_id
+      this.noteVisible = true
+    },
+    handleOk() {
+      this.application.mentor_user_id = this.mentor_user_id
+      this.application.status = 0
+      this.noteVisible = false
+    },
+    handleCancel() {
+      this.application.note = ''
+      this.noteVisible = false
     },
     reset() {
       this.flag = true
       this.getApplyInfo()
     },
     async updateApplyInfo() {
-      if(this.application.mentor_name === "") {
-        this.application.mentor_user_id = ""
-      }
       const {data: res} = await userService.updateApplyInfo(this.application)
       if (res.status !== 200) {
         return this.$message.error(res.msg)
