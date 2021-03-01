@@ -96,6 +96,19 @@
         </template>
       </a-table>
       </a-card>
+      <a-modal
+         title="导入结果"
+        :visible="visible"
+        @ok="visible=false"
+        @cancel="visible=false"
+        
+      >
+        <a-alert 
+        v-for="(item, index) in response" 
+        :key="index" 
+        :message="item.user_id + item.msg" 
+        :type="item.status == 0 ? 'info' : 'error'"></a-alert>
+      </a-modal>
   </div>
 </template>
 
@@ -145,6 +158,8 @@ import userService from '@/service/userService'
 export default {
   data() {
     return {
+      response:[{msg:'',status:'',user_id:''}],
+      visible:false,
       pagination: {
         pageSizeOption: ["5", "10", "15"],
         pageSize: 5,
@@ -171,7 +186,8 @@ export default {
       if (info.file.status !== 'uploading') {
       }
       if (info.file.status === 'done') {
-        this.$message.success(`上传成功`)
+        this.visible = true
+        this.response = info.file.response.data
       } else if (info.file.status === 'error') {
         this.$message.error(`上传失败`)
       }
