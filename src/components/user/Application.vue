@@ -181,6 +181,7 @@ export default {
       }
       this.mentor_user_id = user_id
       this.noteVisible = true
+      this.getApplyInfo()
     },
     handleOk() {
       this.application.mentor_user_id = this.mentor_user_id
@@ -189,7 +190,7 @@ export default {
     },
     handleCancel() {
       this.application.note = ''
-      this.application.mentor_name = this.mentor_name
+      this.getApplyInfo()
       this.noteVisible = false
     },
     reset() {

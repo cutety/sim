@@ -228,7 +228,7 @@ export default {
     async addMentor(){
       const {data: res} = await adminService.addMentor(this.mentor)
       if (res.status !== 200) return this.$message.error(res.msg)
-      this.$message.error(res.msg)
+      this.$message.info(res.msg)
     },
     addSchool() {
       if(this.count == 3) {
