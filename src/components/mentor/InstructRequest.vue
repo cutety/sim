@@ -97,6 +97,9 @@
               <a-descriptions-item label="是否被录取">
                 {{studentsDetail.gender == 1 ? '是' : '否'}}
               </a-descriptions-item>
+              <a-descriptions-item label="申请">
+                {{studentsDetail.note}}
+              </a-descriptions-item>
             </a-descriptions>
           </a-modal>
         </template>
@@ -129,32 +132,44 @@ const columns = [
     title: "姓名",
     dataIndex: "stu_name",
     key: "stu_name",
+    width: "5%",
   },
   {
     title: "性别",
     dataIndex: "gender",
     key: "gender",
     scopedSlots: { customRender: "gender" },
+    width: "5%",
   },
   {
     title: "年级",
     dataIndex: "grade",
     key: "grade",
+    width: "5%",
   },
   {
     title: "专业",
     dataIndex: "major",
     key: "major",
+    width: "15%",
   },
   {
     title: "报考院校",
     dataIndex: "apply_school",
     key: "apply_school",
+    width: "10%",
   },
   {
     title: "报考专业",
     dataIndex: "apply_major",
     key: "apply_major",
+    width: "15%",
+  },
+  {
+    title:"申请",
+    width: "20%",
+    dataIndex:"note",
+    key:"note",
   },
   {
     title: "操作",

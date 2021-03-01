@@ -13,11 +13,11 @@
         <a-input v-model="mentor.name"></a-input>
       </a-form-model-item>
       <a-form-model-item  label="性别" prop="gender">
-        <a-select default-value="1" v-model="mentor.gender">
-      <a-select-option value="1">
+        <a-select defaultValue=1 @change="selectGender">
+      <a-select-option value=1 >
         男
       </a-select-option>
-      <a-select-option value="2">
+      <a-select-option value=0 >
         女
       </a-select-option>
     </a-select>
@@ -35,7 +35,17 @@
         <a-input v-model="mentor.qq"></a-input>
       </a-form-model-item>
       <a-form-model-item  label="学位" prop="degree">
-        <a-input v-model="mentor.degree"></a-input>
+        <a-select default-value="0" v-model="mentor.degree">
+      <a-select-option value="学士" :key="0">
+        学士
+      </a-select-option>
+      <a-select-option value="硕士" :key="1">
+        硕士
+      </a-select-option>
+      <a-select-option value="博士" :key="2">
+        博士
+      </a-select-option>
+    </a-select>
       </a-form-model-item>
       <a-form-model-item  label="研究方向" prop="research_direction">
         <a-input v-model="mentor.research_direction"></a-input>
@@ -143,13 +153,13 @@ export default {
       wrapperCol: { span: 14 },
       mentor:{
         user_id:'',
-        name:'刘老师',
-        gender:'女',
-        phone:'13213687777',
-        email:'git@gail.com',
-        wechat:'wechat222',
-        qq:'231114',
-        degree:'硕士',
+        name:'',
+        gender:1,
+        phone:'',
+        email:'',
+        wechat:'',
+        qq:'',
+        degree:'',
         research_direction:'',
         undergraduate_university:'',
         undergraduate_major:'',
@@ -200,6 +210,9 @@ export default {
     }
   },
   methods: {
+    selectGender(value) {
+      this.mentor.gender = parseInt(value)
+    },
     undergraduateFunc(payload) {
       this.mentor.undergraduate_university = payload
     },
