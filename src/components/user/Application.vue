@@ -59,18 +59,18 @@
       </a-form-model-item>
       <a-form-model-item
         label="录取院校"
-        prop="admission_shcool"
+        prop="admission_school"
       >
-        <a-input v-model="application.admission_shcool">
+        <a-input v-model="application.admission_school">
         </a-input>
       </a-form-model-item>
       <a-form-model-item
         label="初试成绩"
-        prop="preliminiary_result"
+        prop="preliminary_result"
       >
         <a-input-number
           :min="0"
-          v-model="application.preliminiary_result"
+          v-model="application.preliminary_result"
         />
       </a-form-model-item>
       <a-form-model-item
@@ -142,10 +142,10 @@ export default {
         mentor_user_id:"",
         mentor_name:"",
         is_admitted: false,
-        preliminiary_result: 0,
+        preliminary_result: 0,
         retrail_result: 0,
         admission_major: "",
-        admission_shcool: "",
+        admission_school: "",
         status:0,
         note:'',
       },

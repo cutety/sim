@@ -72,13 +72,13 @@
                 {{studentsDetail.apply_major}}
               </a-descriptions-item>
               <a-descriptions-item label="初试成绩">
-                {{studentsDetail.preliminiary_result}}
+                {{studentsDetail.preliminary_result}}
               </a-descriptions-item>
               <a-descriptions-item label="复试成绩">
                 {{studentsDetail.retrail_result}}
               </a-descriptions-item>
                <a-descriptions-item label="录取学校">
-                {{studentsDetail.admission_shcool}}
+                {{studentsDetail.admission_school}}
               </a-descriptions-item>
                <a-descriptions-item label="录取专业">
                 {{studentsDetail.admission_major}}
