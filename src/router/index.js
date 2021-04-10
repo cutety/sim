@@ -23,6 +23,7 @@ const BatchAddMentors = () => import(/* webpackChunkName: "BatchAddMentors" */ '
 const MentorStudents = () => import(/* webpackChunkName: "MentorStudents" */ '@/components/mentor/MentorStudents.vue')
 const InstructRequest = () => import(/* webpackChunkName: "InstructRequest" */ '@/components/mentor/InstructRequest.vue')
 const SelectionResult = () => import(/* webpackChunkName: "SelectionResult" */ '@/components/user/SelectionResult.vue')
+const StudentsList = () => import(/* webpackChunkName: "StudentsList" */ '@/components/student/StudentsList.vue')
 const routes = [
   {
     path: '/login',
@@ -43,6 +44,7 @@ const routes = [
       {path: '/mentorStudents', component: MentorStudents},
       {path: '/instructRequest', component: InstructRequest},
       {path: '/selectionResult', component: SelectionResult},
+      {path: '/studentsList', component: StudentsList}
     ]
   },
 ]

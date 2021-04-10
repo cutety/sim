@@ -64,6 +64,13 @@
           批量添加
         </a-menu-item>
       </a-sub-menu>
+      <a-sub-menu key="studentPanel" v-show="role == 1 || role == 3 ? true : false">
+        <span slot="title"><a-icon type="user"/><span>学生信息</span></span>
+        <a-menu-item key="studentsList">
+          <a-icon type="user-add"/>
+          学生列表
+        </a-menu-item>
+      </a-sub-menu>
     </a-menu>
   </a-layout-sider>
 </template>
@@ -74,8 +81,8 @@ import storageService from "@/service/storageService"
 export default {
   data() {
     return {
-      rootSubmenuKeys: ['application', 'mentorMatch', 'changePassword', 'userInfo', 'addMentor', 'batchAddMentors','mentorStudent', 'instructRequest', 'selectionResult'],
-      openKeys: ['pee', 'accountManage', 'dashboard', 'mentorPanel'],
+      rootSubmenuKeys: ['application', 'mentorMatch', 'changePassword', 'userInfo', 'addMentor', 'batchAddMentors','mentorStudent', 'instructRequest', 'selectionResult', 'studentsList'],
+      openKeys: ['pee', 'accountManage', 'dashboard', 'mentorPanel', 'studentPanel'],
       username:'',
       role:'',
     }

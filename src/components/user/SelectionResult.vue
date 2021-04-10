@@ -2,7 +2,7 @@
   <div>
       <a-alert
       :message="status == 0 ? '待审核' : (status == 1 ? '通过' : '被拒绝')"
-      :description="status == 0 ? '待审核' : (status == 1 ? '通过' : '老师留言：'+note)"
+      :description="status == 0 ? '待审核或未选' : (status == 1 ? '通过' : '老师留言：'+note)"
       :type="status == 0 ? 'info' : (status == 1 ? 'success' : 'error')"
       show-icon
     />

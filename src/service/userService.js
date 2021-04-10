@@ -9,7 +9,7 @@ const info = () => {
 }
 
 const getApplyInfo = (params) => {
-  return request.get('user/apply/info', {            
+  return request.get('user/apply/info', {
     params:params
   })
 }
@@ -46,7 +46,7 @@ const getMentorInfo = (user_id) => {
   })
 }
 const dissolve = (user_id) => {
-  
+
   return request.get("user/dissolve/mentor", {
     params:{
       user_id:user_id
@@ -80,6 +80,12 @@ const getMentors = (params) => {
   })
 }
 
+const getStudentDetail = (params) => {
+  return request.get('student/detail', {
+    params:params
+  })
+}
+
 export default {
   login,
   info,
@@ -94,4 +100,5 @@ export default {
   updateStudentInfo,
   dualSelect,
   getMentors,
+  getStudentDetail,
 }
