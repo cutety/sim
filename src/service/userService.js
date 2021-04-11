@@ -86,6 +86,12 @@ const getStudentDetail = (params) => {
   })
 }
 
+const getAdmissionHistory = (params) => {
+  return request.get('student/admission/history', {
+    params:params
+  })
+}
+
 export default {
   login,
   info,
@@ -101,4 +107,5 @@ export default {
   dualSelect,
   getMentors,
   getStudentDetail,
+  getAdmissionHistory,
 }

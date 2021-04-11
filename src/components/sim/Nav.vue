@@ -8,9 +8,9 @@
     <div class="log">
       <span> {{username}} </span>
     </div>
-     <a-menu 
-      theme="dark" 
-      mode="inline" 
+     <a-menu
+      theme="dark"
+      mode="inline"
       :open-keys="openKeys"
       :default-selected-keys="['application']"
       :default-open-keys="['application']"
@@ -25,6 +25,10 @@
         <a-menu-item key="mentorMatch">
           <a-icon type="team"/>
           导师匹配
+        </a-menu-item>
+        <a-menu-item key="admissionHistory">
+          <a-icon type="cloud"/>
+          往届录取
         </a-menu-item>
           <a-menu-item key="selectionResult">
           <a-icon type="table"/>
@@ -81,7 +85,7 @@ import storageService from "@/service/storageService"
 export default {
   data() {
     return {
-      rootSubmenuKeys: ['application', 'mentorMatch', 'changePassword', 'userInfo', 'addMentor', 'batchAddMentors','mentorStudent', 'instructRequest', 'selectionResult', 'studentsList'],
+      rootSubmenuKeys: ['application', 'mentorMatch', 'changePassword', 'userInfo', 'addMentor', 'batchAddMentors','mentorStudent', 'instructRequest', 'selectionResult', 'studentsList','admissionHistory'],
       openKeys: ['pee', 'accountManage', 'dashboard', 'mentorPanel', 'studentPanel'],
       username:'',
       role:'',
@@ -105,13 +109,13 @@ export default {
       }
     },
     onCollapse(collapsed, type) {
-      
+
     },
     onBreakpoint(broken) {
-      
+
     },
     getApplyInfo() {
-      
+
     },
     goToPage(item) {
       this.$router.push('/' + item.key).catch((err) => err)
