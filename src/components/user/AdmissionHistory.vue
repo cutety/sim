@@ -125,6 +125,26 @@ const columns = [
     key: "admission_major",
   },
   {
+    title: "电话",
+    key: "phone",
+    dataIndex: "phone",
+  },
+  {
+    title: "邮箱",
+    key: "email",
+    dataIndex: "email",
+  },
+  {
+    title: "微信",
+    key: "wechat",
+    dataIndex: "wechat",
+  },
+  {
+    title: "QQ",
+    key: "qq",
+    dataIndex: "qq",
+  },
+  {
     title: "操作",
     width: "20%",
     key: "action",
