@@ -92,6 +92,26 @@ const getAdmissionHistory = (params) => {
   })
 }
 
+const getGradeList = () => {
+  return request.get('students/grade/list')
+}
+
+const getAdmittedAmount = (grade) => {
+  return request.get('visual/admitted', {
+    params: {
+      grade:grade
+    }
+  })
+}
+
+const getAdmittedTendency = () => {
+  return request.get('visual/admitted/tendency')
+}
+
+const getAgeDistribution = () => {
+  return request.get(`students/age/distribution/17`)
+}
+
 export default {
   login,
   info,
@@ -108,4 +128,8 @@ export default {
   getMentors,
   getStudentDetail,
   getAdmissionHistory,
+  getGradeList,
+  getAdmittedAmount,
+  getAgeDistribution,
+  getAdmittedTendency,
 }

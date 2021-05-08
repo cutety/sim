@@ -11,8 +11,8 @@
           </a-input>
          </a-form-model-item>
         <a-form-model-item prop="password">
-          <a-input-password 
-					v-model="user.password" 
+          <a-input-password
+					v-model="user.password"
 					placeholder="请输入密码"
 					v-on:keyup.enter="login"
 					>
@@ -53,7 +53,7 @@ export default {
         if (!valid) return this.$message.error('数据不合法，请重新输入')
         const { data: res} = await userService.login(this.user)
         if (res.status !== 200) return this.$message.error(res.msg)
-        storageService.set(storageService.USER_TOKEN, res.data)
+        storageService.set(storageService.USER_TOKEN, res.data.token)
         const { data: info} = await userService.info()
         storageService.set(storageService.USER_INFO, JSON.stringify(info.data))
         if(info.data.role === 1) {

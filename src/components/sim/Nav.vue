@@ -75,6 +75,13 @@
           学生列表
         </a-menu-item>
       </a-sub-menu>
+       <a-sub-menu key="visualPanel">
+         <span slot="title"><a-icon type="pie-chart" /><span>可视化</span></span>
+         <a-menu-item key="admittedAmount">
+           <a-icon type="line-chart" />
+           往届录取情况
+         </a-menu-item>
+       </a-sub-menu>
     </a-menu>
   </a-layout-sider>
 </template>
@@ -85,8 +92,8 @@ import storageService from "@/service/storageService"
 export default {
   data() {
     return {
-      rootSubmenuKeys: ['application', 'mentorMatch', 'changePassword', 'userInfo', 'addMentor', 'batchAddMentors','mentorStudent', 'instructRequest', 'selectionResult', 'studentsList','admissionHistory'],
-      openKeys: ['pee', 'accountManage', 'dashboard', 'mentorPanel', 'studentPanel'],
+      rootSubmenuKeys: ['application', 'mentorMatch', 'changePassword', 'userInfo', 'addMentor', 'batchAddMentors','mentorStudent', 'instructRequest', 'selectionResult', 'studentsList','admissionHistory','admittedAmount'],
+      openKeys: ['pee', 'accountManage', 'dashboard', 'mentorPanel', 'studentPanel', 'visualPanel'],
       username:'',
       role:'',
     }

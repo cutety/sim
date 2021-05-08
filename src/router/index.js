@@ -25,6 +25,7 @@ const InstructRequest = () => import(/* webpackChunkName: "InstructRequest" */ '
 const SelectionResult = () => import(/* webpackChunkName: "SelectionResult" */ '@/components/user/SelectionResult.vue')
 const StudentsList = () => import(/* webpackChunkName: "StudentsList" */ '@/components/student/StudentsList.vue')
 const AdmissionHistory = () => import(/* webpackChunkName: "AdmissionHistory" */ '@/components/user/AdmissionHistory.vue')
+const AdmittedAmount = () => import(/* webpackChunkName: "AdmittedAmount" */ '@/components/visual/AdmittedAmount.vue')
 const routes = [
   {
     path: '/login',
@@ -46,7 +47,8 @@ const routes = [
       {path: '/instructRequest', component: InstructRequest},
       {path: '/selectionResult', component: SelectionResult},
       {path: '/studentsList', component: StudentsList},
-      {path: '/admissionHistory', component: AdmissionHistory}
+      {path: '/admissionHistory', component: AdmissionHistory},
+      {path:'/admittedAmount', component: AdmittedAmount},
     ]
   },
 ]
