@@ -39,6 +39,13 @@
               icon="info-circle"
               @click="getMentorInfo(data.user_id)"
             >详情</a-button>
+            <a-button
+              style="margin-left: 5px"
+              size="small"
+              type="danger"
+              icon="info-circle"
+              @click="deleteMentorByID(data.user_id)"
+            >删除</a-button>
           </div>
           <a-modal
             width="900px"
@@ -101,18 +108,20 @@
         :visible="visible"
         @ok="visible=false"
         @cancel="visible=false"
-        
+
       >
-        <a-alert 
-        v-for="(item, index) in response" 
-        :key="index" 
-        :message="item.user_id + item.msg" 
+        <a-alert
+        v-for="(item, index) in response"
+        :key="index"
+        :message="item.user_id + item.msg"
         :type="item.status == 0 ? 'info' : 'error'"></a-alert>
       </a-modal>
   </div>
 </template>
 
 <script>
+import mentorService from "../../service/mentorService"
+
 const columns = [
   {
     dataIndex: "name",
@@ -182,6 +191,18 @@ export default {
     this.getMentorList()
   },
   methods: {
+    async deleteMentorByID(mentor_id) {
+      const {data: res} = await mentorService.deleteMentorByID(mentor_id)
+      console.log(res)
+      if(res.status == 200) {
+        this.$message.success(`删除成功`)
+        this.queryParam.page_size = 5
+        this.queryParam.page_number = 1
+        await this.getMentorList()
+      } else {
+        this.$message.error(`删除失败`,res.msg)
+      }
+    },
     handleChange(info) {
       if (info.file.status !== 'uploading') {
       }

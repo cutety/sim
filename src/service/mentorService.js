@@ -29,7 +29,16 @@ const chooseStudent =(user_id) => {
     params:params
   })
 }
+
+const deleteMentorByID = (mentor_id) => {
+  return request.delete("admin/delete/mentor", {
+    params: {
+      mentor_id:mentor_id
+    }
+  })
+}
 export default {
+  deleteMentorByID,
   mentoredStudents,
   updateMentorInfo,
   instructRequest,
